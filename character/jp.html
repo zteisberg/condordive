@@ -4,7 +4,7 @@
     body{
       font-family: Helvetica, Arial, sans-serif;
       color: #FFF;
-      background-color: #282A3A !important;
+      background-color: #000000 !important;
       background-repeat: no-repeat;
     }
 
@@ -60,7 +60,8 @@ sortedCharacterData.forEach(function(d){
       return "rgba(255,255,0,.75)";
     }
   })
-  document.body.style.backgroundImage = "url('images/" + character.toLowerCase() + ".png')";
+  document.body.style.backgroundImage = "url('images/" + character.toLowerCase() + ".png')" + ", url('images/bg_" + character.toLowerCase() + ".jpg')";
+  Chart.defaults.borderColor = "#CCC"
   document.body.style.backgroundRepeat = "no-repeat"
   Chart.defaults.color = "#FFFFFF";
   Chart.defaults.font.size = 20;
