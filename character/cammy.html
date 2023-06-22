@@ -1,0 +1,110 @@
+<html>
+<head>
+  <style>
+    body{
+      font-family: Helvetica, Arial, sans-serif;
+      color: #FFF;
+      background-color: #282A3A !important;
+      background-repeat: no-repeat;
+    }
+
+    #back{
+      margin: 15px;
+    }
+  </style>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+  
+  </head>
+<body>
+
+<a id="back" href="../index.html"><button type="button" class="btn btn-primary">Back</button></a>
+
+<div>
+  <canvas id="myChart"></canvas>
+</div>
+
+<script>
+  const ctx = document.getElementById('myChart');
+  var character="Cammy"
+  var mus = [-0.85, -0.05, -1.71, 1.15, -2.93, -0.65, -1.32, -1.54, -2.18, -7.63, 0.67, 6.05, -0.30, 2.30, 1.70, -3.73, -9.16, 3.08, 1.01].map(x => x + 50.0)
+  var characters = ['Ken', 'JP', 'Cammy', 'Dee Jay', 'Luke', 'Juri', 'Manon', 'Marisa', 'E. Honda', 'Chun-Li', 'Ryu', 'Kimberly', 'Jamie', 'Guile', 'Zangief', 'Blanka', 'Dhalsim', 'Lily']
+  var allStat = mus[0];
+  var mus = mus.slice(1);
+  var characterData = characters.map(function(d, i) {
+  return {
+    label: d,
+    data: mus[i] || 0
+  };
+});
+
+sortedCharacterData = characterData.sort(function(a, b) {
+  return b.data - a.data;
+});
+
+sortedCharacters = ['All'];
+sortedMatchupData = [allStat];
+sortedCharacterData.forEach(function(d){
+  sortedCharacters.push(d.label);
+  sortedMatchupData.push(d.data);
+});
+  var mu_colors = sortedMatchupData.map((x) => {
+    if (x>50) {
+      return "rgba(0,255,122,.75)";
+    } else if (x<50) {
+      return "rgba(255,0,0,.75)";
+    } else {
+      return "rgba(255,255,0,.75)";
+    }
+  })
+  document.body.style.backgroundImage = "url('images/" + character.toLowerCase() + ".png')";
+  document.body.style.backgroundRepeat = "no-repeat"
+  Chart.defaults.color = "#FFFFFF";
+  Chart.defaults.font.size = 20;
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: sortedCharacters,
+      datasets: [{
+        label: 'Winrate %',
+        backgroundColor: mu_colors,
+        borderColor: "white",
+        data: sortedMatchupData,
+        borderWidth: 1
+      },
+      {
+            type: 'line',
+            backgroundColor: "white",
+            color: "white",
+            borderColor: "white",
+            data: mus.map(()=> 50),
+            pointBorderWidth: 0,
+            pointStyle: false,
+            borderDash: [5,4]
+        }]
+    },
+    options: {
+      plugins: {
+            legend: {
+              display: false
+            },
+            title: {
+                display: true,
+                text: character+' Matchup Win %'
+            }
+        },
+      indexAxis: 'y',
+      scales: {
+        x: {
+          min: 40,
+          suggestedMax: 60
+        }
+      }
+    }
+  });
+</script>
+</body>
+</html>
